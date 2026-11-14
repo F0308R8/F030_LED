@@ -1,0 +1,572 @@
+
+F030_3xLED.elf:     file format elf32-littlearm
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .isr_vector   000000c0  08000000  08000000  00001000  2**0
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  1 .text         000002d0  080000c0  080000c0  000010c0  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  2 .rodata       00000000  08000390  08000398  00001398  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  3 .ARM.extab    00000000  08000390  08000390  00001398  2**0
+                  CONTENTS, READONLY
+  4 .ARM          00000000  08000390  08000390  00001398  2**0
+                  CONTENTS, READONLY
+  5 .preinit_array 00000000  08000390  08000398  00001398  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  6 .init_array   00000004  08000390  08000390  00001390  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  7 .fini_array   00000004  08000394  08000394  00001394  2**2
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  8 .data         00000000  20000000  20000000  00001398  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  9 .bss          0000001c  20000000  08000398  00002000  2**2
+                  ALLOC
+ 10 ._user_heap_stack 00000604  2000001c  08000398  0000201c  2**0
+                  ALLOC
+ 11 .ARM.attributes 00000028  00000000  00000000  00001398  2**0
+                  CONTENTS, READONLY
+ 12 .debug_info   0000023a  00000000  00000000  000013c0  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 13 .debug_abbrev 0000011d  00000000  00000000  000015fa  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 14 .debug_aranges 00000048  00000000  00000000  00001718  2**3
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 15 .debug_rnglists 0000002d  00000000  00000000  00001760  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 16 .debug_macro  00008399  00000000  00000000  0000178d  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 17 .debug_line   00000629  00000000  00000000  00009b26  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 18 .debug_str    0002bf74  00000000  00000000  0000a14f  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 19 .comment      00000043  00000000  00000000  000360c3  2**0
+                  CONTENTS, READONLY
+ 20 .debug_frame  0000005c  00000000  00000000  00036108  2**2
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+ 21 .debug_line_str 0000003e  00000000  00000000  00036164  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+
+Disassembly of section .text:
+
+080000c0 <__do_global_dtors_aux>:
+ 80000c0:	b510      	push	{r4, lr}
+ 80000c2:	4c06      	ldr	r4, [pc, #24]	@ (80000dc <__do_global_dtors_aux+0x1c>)
+ 80000c4:	7823      	ldrb	r3, [r4, #0]
+ 80000c6:	2b00      	cmp	r3, #0
+ 80000c8:	d107      	bne.n	80000da <__do_global_dtors_aux+0x1a>
+ 80000ca:	4b05      	ldr	r3, [pc, #20]	@ (80000e0 <__do_global_dtors_aux+0x20>)
+ 80000cc:	2b00      	cmp	r3, #0
+ 80000ce:	d002      	beq.n	80000d6 <__do_global_dtors_aux+0x16>
+ 80000d0:	4804      	ldr	r0, [pc, #16]	@ (80000e4 <__do_global_dtors_aux+0x24>)
+ 80000d2:	e000      	b.n	80000d6 <__do_global_dtors_aux+0x16>
+ 80000d4:	bf00      	nop
+ 80000d6:	2301      	movs	r3, #1
+ 80000d8:	7023      	strb	r3, [r4, #0]
+ 80000da:	bd10      	pop	{r4, pc}
+ 80000dc:	20000000 	.word	0x20000000
+ 80000e0:	00000000 	.word	0x00000000
+ 80000e4:	08000378 	.word	0x08000378
+
+080000e8 <frame_dummy>:
+ 80000e8:	4b04      	ldr	r3, [pc, #16]	@ (80000fc <frame_dummy+0x14>)
+ 80000ea:	b510      	push	{r4, lr}
+ 80000ec:	2b00      	cmp	r3, #0
+ 80000ee:	d003      	beq.n	80000f8 <frame_dummy+0x10>
+ 80000f0:	4903      	ldr	r1, [pc, #12]	@ (8000100 <frame_dummy+0x18>)
+ 80000f2:	4804      	ldr	r0, [pc, #16]	@ (8000104 <frame_dummy+0x1c>)
+ 80000f4:	e000      	b.n	80000f8 <frame_dummy+0x10>
+ 80000f6:	bf00      	nop
+ 80000f8:	bd10      	pop	{r4, pc}
+ 80000fa:	46c0      	nop			@ (mov r8, r8)
+ 80000fc:	00000000 	.word	0x00000000
+ 8000100:	20000004 	.word	0x20000004
+ 8000104:	08000378 	.word	0x08000378
+
+08000108 <main>:
+#if !defined(__SOFT_FP__) && defined(__ARM_FP)
+  #warning "FPU is not initialized, but the project is compiling for an FPU. Please initialize the FPU before use."
+#endif
+
+int main(void)
+{
+ 8000108:	b580      	push	{r7, lr}
+ 800010a:	b082      	sub	sp, #8
+ 800010c:	af00      	add	r7, sp, #0
+
+	int i=0;
+ 800010e:	2300      	movs	r3, #0
+ 8000110:	607b      	str	r3, [r7, #4]
+	/*開啟GIOB的時鐘*/
+	RCC->AHBENR |=(1<<18);//使用外部設備的功能都要先開啟對的時鐘
+ 8000112:	4b6e      	ldr	r3, [pc, #440]	@ (80002cc <main+0x1c4>)
+ 8000114:	695a      	ldr	r2, [r3, #20]
+ 8000116:	4b6d      	ldr	r3, [pc, #436]	@ (80002cc <main+0x1c4>)
+ 8000118:	2180      	movs	r1, #128	@ 0x80
+ 800011a:	02c9      	lsls	r1, r1, #11
+ 800011c:	430a      	orrs	r2, r1
+ 800011e:	615a      	str	r2, [r3, #20]
+	/***** PB2端口初始化*****/
+
+	// ===== 1. 設定 PB1 為輸出模式 =====
+	GPIOB->MODER &= ~(0x3 << (1 * 2));   // 清除 PB1 模式 (Bit 3, 2 歸零)
+ 8000120:	4b6b      	ldr	r3, [pc, #428]	@ (80002d0 <main+0x1c8>)
+ 8000122:	681a      	ldr	r2, [r3, #0]
+ 8000124:	4b6a      	ldr	r3, [pc, #424]	@ (80002d0 <main+0x1c8>)
+ 8000126:	210c      	movs	r1, #12
+ 8000128:	438a      	bics	r2, r1
+ 800012a:	601a      	str	r2, [r3, #0]
+	GPIOB->MODER |=  (0x1 << (1 * 2));   // 設定 PB1 為輸出模式 01
+ 800012c:	4b68      	ldr	r3, [pc, #416]	@ (80002d0 <main+0x1c8>)
+ 800012e:	681a      	ldr	r2, [r3, #0]
+ 8000130:	4b67      	ldr	r3, [pc, #412]	@ (80002d0 <main+0x1c8>)
+ 8000132:	2104      	movs	r1, #4
+ 8000134:	430a      	orrs	r2, r1
+ 8000136:	601a      	str	r2, [r3, #0]
+
+	//PB2
+	GPIOB->MODER &=~(0x3 << (2*2)); 	//GPIOB MODER2 清除
+ 8000138:	4b65      	ldr	r3, [pc, #404]	@ (80002d0 <main+0x1c8>)
+ 800013a:	681a      	ldr	r2, [r3, #0]
+ 800013c:	4b64      	ldr	r3, [pc, #400]	@ (80002d0 <main+0x1c8>)
+ 800013e:	2130      	movs	r1, #48	@ 0x30
+ 8000140:	438a      	bics	r2, r1
+ 8000142:	601a      	str	r2, [r3, #0]
+	GPIOB->MODER |= (0x1 << (2*2)); 	//GPIOB MODER2 設定為輸出模式01
+ 8000144:	4b62      	ldr	r3, [pc, #392]	@ (80002d0 <main+0x1c8>)
+ 8000146:	681a      	ldr	r2, [r3, #0]
+ 8000148:	4b61      	ldr	r3, [pc, #388]	@ (80002d0 <main+0x1c8>)
+ 800014a:	2110      	movs	r1, #16
+ 800014c:	430a      	orrs	r2, r1
+ 800014e:	601a      	str	r2, [r3, #0]
+
+	// ===== 3. 設定 PB15 為輸出模式 =====
+	GPIOB->MODER &= ~(0x3 << (15 * 2));  // 清除 PB15 模式 (Bit 31, 30 歸零)
+ 8000150:	4b5f      	ldr	r3, [pc, #380]	@ (80002d0 <main+0x1c8>)
+ 8000152:	681a      	ldr	r2, [r3, #0]
+ 8000154:	4b5e      	ldr	r3, [pc, #376]	@ (80002d0 <main+0x1c8>)
+ 8000156:	0092      	lsls	r2, r2, #2
+ 8000158:	0892      	lsrs	r2, r2, #2
+ 800015a:	601a      	str	r2, [r3, #0]
+	GPIOB->MODER |=  (0x1 << (15 * 2));  // 設定 PB15 為輸出模式 01
+ 800015c:	4b5c      	ldr	r3, [pc, #368]	@ (80002d0 <main+0x1c8>)
+ 800015e:	681a      	ldr	r2, [r3, #0]
+ 8000160:	4b5b      	ldr	r3, [pc, #364]	@ (80002d0 <main+0x1c8>)
+ 8000162:	2180      	movs	r1, #128	@ 0x80
+ 8000164:	05c9      	lsls	r1, r1, #23
+ 8000166:	430a      	orrs	r2, r1
+ 8000168:	601a      	str	r2, [r3, #0]
+
+	/////////////////////////////////////////////////////
+
+	// ===== 1. 設定 PB1 為推挽輸出 (Push-Pull) =====
+	GPIOB->OTYPER &= ~(0x1 << 1);        // 清除 PB1 (Bit 1 歸零)
+ 800016a:	4b59      	ldr	r3, [pc, #356]	@ (80002d0 <main+0x1c8>)
+ 800016c:	685a      	ldr	r2, [r3, #4]
+ 800016e:	4b58      	ldr	r3, [pc, #352]	@ (80002d0 <main+0x1c8>)
+ 8000170:	2102      	movs	r1, #2
+ 8000172:	438a      	bics	r2, r1
+ 8000174:	605a      	str	r2, [r3, #4]
+	GPIOB->OTYPER |=  (0x0 << 1);        // 設定 PB1 為推挽模式 (可省略，因清除後即為 0)
+ 8000176:	4a56      	ldr	r2, [pc, #344]	@ (80002d0 <main+0x1c8>)
+ 8000178:	4b55      	ldr	r3, [pc, #340]	@ (80002d0 <main+0x1c8>)
+ 800017a:	6852      	ldr	r2, [r2, #4]
+ 800017c:	605a      	str	r2, [r3, #4]
+
+	//PB2
+	GPIOB->OTYPER &=~(0x1 << 2); 			//GPIOB OTYPER2 清除
+ 800017e:	4b54      	ldr	r3, [pc, #336]	@ (80002d0 <main+0x1c8>)
+ 8000180:	685a      	ldr	r2, [r3, #4]
+ 8000182:	4b53      	ldr	r3, [pc, #332]	@ (80002d0 <main+0x1c8>)
+ 8000184:	2104      	movs	r1, #4
+ 8000186:	438a      	bics	r2, r1
+ 8000188:	605a      	str	r2, [r3, #4]
+	GPIOB->OTYPER |= (0x0 << 2);
+ 800018a:	4a51      	ldr	r2, [pc, #324]	@ (80002d0 <main+0x1c8>)
+ 800018c:	4b50      	ldr	r3, [pc, #320]	@ (80002d0 <main+0x1c8>)
+ 800018e:	6852      	ldr	r2, [r2, #4]
+ 8000190:	605a      	str	r2, [r3, #4]
+
+	// ===== 3. 設定 PB15 為推挽輸出 (Push-Pull) =====
+	GPIOB->OTYPER &= ~(0x1 << 15);       // 清除 PB15 (Bit 15 歸零)
+ 8000192:	4b4f      	ldr	r3, [pc, #316]	@ (80002d0 <main+0x1c8>)
+ 8000194:	685a      	ldr	r2, [r3, #4]
+ 8000196:	4b4e      	ldr	r3, [pc, #312]	@ (80002d0 <main+0x1c8>)
+ 8000198:	494e      	ldr	r1, [pc, #312]	@ (80002d4 <main+0x1cc>)
+ 800019a:	400a      	ands	r2, r1
+ 800019c:	605a      	str	r2, [r3, #4]
+	GPIOB->OTYPER |=  (0x0 << 15);       // 設定 PB15 為推挽模式
+ 800019e:	4a4c      	ldr	r2, [pc, #304]	@ (80002d0 <main+0x1c8>)
+ 80001a0:	4b4b      	ldr	r3, [pc, #300]	@ (80002d0 <main+0x1c8>)
+ 80001a2:	6852      	ldr	r2, [r2, #4]
+ 80001a4:	605a      	str	r2, [r3, #4]
+
+	/////////////////////////////////////////////////////
+
+
+	// ===== 1. 設定 PB1 速度模式 =====
+	GPIOB->OSPEEDR &= ~(0x3 << (1 * 2));   // 清除 PB1 (Bit 3, 2 歸零)
+ 80001a6:	4b4a      	ldr	r3, [pc, #296]	@ (80002d0 <main+0x1c8>)
+ 80001a8:	689a      	ldr	r2, [r3, #8]
+ 80001aa:	4b49      	ldr	r3, [pc, #292]	@ (80002d0 <main+0x1c8>)
+ 80001ac:	210c      	movs	r1, #12
+ 80001ae:	438a      	bics	r2, r1
+ 80001b0:	609a      	str	r2, [r3, #8]
+	GPIOB->OSPEEDR |=  (0x0 << (1 * 2));   // 設定 PB1 為 Low speed (可省略，因清除後即為 00)
+ 80001b2:	4a47      	ldr	r2, [pc, #284]	@ (80002d0 <main+0x1c8>)
+ 80001b4:	4b46      	ldr	r3, [pc, #280]	@ (80002d0 <main+0x1c8>)
+ 80001b6:	6892      	ldr	r2, [r2, #8]
+ 80001b8:	609a      	str	r2, [r3, #8]
+
+	// PB2
+	GPIOB->OSPEEDR &=~(0x3 << (2*2)); 	//GPIOB OSPEEDR2 清除
+ 80001ba:	4b45      	ldr	r3, [pc, #276]	@ (80002d0 <main+0x1c8>)
+ 80001bc:	689a      	ldr	r2, [r3, #8]
+ 80001be:	4b44      	ldr	r3, [pc, #272]	@ (80002d0 <main+0x1c8>)
+ 80001c0:	2130      	movs	r1, #48	@ 0x30
+ 80001c2:	438a      	bics	r2, r1
+ 80001c4:	609a      	str	r2, [r3, #8]
+	GPIOB->OSPEEDR |= (0x0 << (2*2)); 	//GPIOB OSPEEDR2 設定為高速模式
+ 80001c6:	4a42      	ldr	r2, [pc, #264]	@ (80002d0 <main+0x1c8>)
+ 80001c8:	4b41      	ldr	r3, [pc, #260]	@ (80002d0 <main+0x1c8>)
+ 80001ca:	6892      	ldr	r2, [r2, #8]
+ 80001cc:	609a      	str	r2, [r3, #8]
+
+	// ===== 3. 設定 PB15 速度模式 =====
+	GPIOB->OSPEEDR &= ~(0x3 << (15 * 2));  // 清除 PB15 (Bit 31, 30 歸零)
+ 80001ce:	4b40      	ldr	r3, [pc, #256]	@ (80002d0 <main+0x1c8>)
+ 80001d0:	689a      	ldr	r2, [r3, #8]
+ 80001d2:	4b3f      	ldr	r3, [pc, #252]	@ (80002d0 <main+0x1c8>)
+ 80001d4:	0092      	lsls	r2, r2, #2
+ 80001d6:	0892      	lsrs	r2, r2, #2
+ 80001d8:	609a      	str	r2, [r3, #8]
+	GPIOB->OSPEEDR |=  (0x0 << (15 * 2));  // 設定 PB15 為 Low speed
+ 80001da:	4a3d      	ldr	r2, [pc, #244]	@ (80002d0 <main+0x1c8>)
+ 80001dc:	4b3c      	ldr	r3, [pc, #240]	@ (80002d0 <main+0x1c8>)
+ 80001de:	6892      	ldr	r2, [r2, #8]
+ 80001e0:	609a      	str	r2, [r3, #8]
+
+	/////////////////////////////////////////////////////
+
+
+	// ===== 1. 設定 PB1 為浮空 (No Pull-up / Pull-down) =====
+	GPIOB->PUPDR &= ~(0x3 << (1 * 2));   // 清除 PB1 (Bit 3, 2 歸零為 00)
+ 80001e2:	4b3b      	ldr	r3, [pc, #236]	@ (80002d0 <main+0x1c8>)
+ 80001e4:	68da      	ldr	r2, [r3, #12]
+ 80001e6:	4b3a      	ldr	r3, [pc, #232]	@ (80002d0 <main+0x1c8>)
+ 80001e8:	210c      	movs	r1, #12
+ 80001ea:	438a      	bics	r2, r1
+ 80001ec:	60da      	str	r2, [r3, #12]
+	GPIOB->PUPDR |=  (0x0 << (1 * 2));   // 設定 PB1 為 00 (可省略，因清除後即為 00)
+ 80001ee:	4a38      	ldr	r2, [pc, #224]	@ (80002d0 <main+0x1c8>)
+ 80001f0:	4b37      	ldr	r3, [pc, #220]	@ (80002d0 <main+0x1c8>)
+ 80001f2:	68d2      	ldr	r2, [r2, #12]
+ 80001f4:	60da      	str	r2, [r3, #12]
+
+	//PB2
+	GPIOB->PUPDR &=~(0x3 << (2*2)); 		//GPIOB PUPDR2 清除
+ 80001f6:	4b36      	ldr	r3, [pc, #216]	@ (80002d0 <main+0x1c8>)
+ 80001f8:	68da      	ldr	r2, [r3, #12]
+ 80001fa:	4b35      	ldr	r3, [pc, #212]	@ (80002d0 <main+0x1c8>)
+ 80001fc:	2130      	movs	r1, #48	@ 0x30
+ 80001fe:	438a      	bics	r2, r1
+ 8000200:	60da      	str	r2, [r3, #12]
+	GPIOB->PUPDR |= (0x0 << (2*2)); 		//GPIOB PUPDR2設定為不上拉和不下拉
+ 8000202:	4a33      	ldr	r2, [pc, #204]	@ (80002d0 <main+0x1c8>)
+ 8000204:	4b32      	ldr	r3, [pc, #200]	@ (80002d0 <main+0x1c8>)
+ 8000206:	68d2      	ldr	r2, [r2, #12]
+ 8000208:	60da      	str	r2, [r3, #12]
+
+	// ===== 3. 設定 PB15 為浮空 (No Pull-up / Pull-down) =====
+	GPIOB->PUPDR &= ~(0x3 << (15 * 2));  // 清除 PB15 (Bit 31, 30 歸零為 00)
+ 800020a:	4b31      	ldr	r3, [pc, #196]	@ (80002d0 <main+0x1c8>)
+ 800020c:	68da      	ldr	r2, [r3, #12]
+ 800020e:	4b30      	ldr	r3, [pc, #192]	@ (80002d0 <main+0x1c8>)
+ 8000210:	0092      	lsls	r2, r2, #2
+ 8000212:	0892      	lsrs	r2, r2, #2
+ 8000214:	60da      	str	r2, [r3, #12]
+	GPIOB->PUPDR |=  (0x0 << (15 * 2));  // 設定 PB15 為 00
+ 8000216:	4a2e      	ldr	r2, [pc, #184]	@ (80002d0 <main+0x1c8>)
+ 8000218:	4b2d      	ldr	r3, [pc, #180]	@ (80002d0 <main+0x1c8>)
+ 800021a:	68d2      	ldr	r2, [r2, #12]
+ 800021c:	60da      	str	r2, [r3, #12]
+
+
+	while(1)
+	{
+		// ===== 1. PB1 輸出高電位 (點亮紅燈) =====
+		GPIOB->BSRR = (1 << 1);
+ 800021e:	4b2c      	ldr	r3, [pc, #176]	@ (80002d0 <main+0x1c8>)
+ 8000220:	2202      	movs	r2, #2
+ 8000222:	619a      	str	r2, [r3, #24]
+		for(i=0;i<=150000;i++);	//小延時
+ 8000224:	2300      	movs	r3, #0
+ 8000226:	607b      	str	r3, [r7, #4]
+ 8000228:	e002      	b.n	8000230 <main+0x128>
+ 800022a:	687b      	ldr	r3, [r7, #4]
+ 800022c:	3301      	adds	r3, #1
+ 800022e:	607b      	str	r3, [r7, #4]
+ 8000230:	687b      	ldr	r3, [r7, #4]
+ 8000232:	4a29      	ldr	r2, [pc, #164]	@ (80002d8 <main+0x1d0>)
+ 8000234:	4293      	cmp	r3, r2
+ 8000236:	ddf8      	ble.n	800022a <main+0x122>
+
+		// ===== 1. PB2 輸出高電位 (點亮紅燈) =====
+		GPIOB->BSRR = (1<<2); 	//PB2輸出高電位
+ 8000238:	4b25      	ldr	r3, [pc, #148]	@ (80002d0 <main+0x1c8>)
+ 800023a:	2204      	movs	r2, #4
+ 800023c:	619a      	str	r2, [r3, #24]
+		for(i=0;i<=150000;i++);	//小延時
+ 800023e:	2300      	movs	r3, #0
+ 8000240:	607b      	str	r3, [r7, #4]
+ 8000242:	e002      	b.n	800024a <main+0x142>
+ 8000244:	687b      	ldr	r3, [r7, #4]
+ 8000246:	3301      	adds	r3, #1
+ 8000248:	607b      	str	r3, [r7, #4]
+ 800024a:	687b      	ldr	r3, [r7, #4]
+ 800024c:	4a22      	ldr	r2, [pc, #136]	@ (80002d8 <main+0x1d0>)
+ 800024e:	4293      	cmp	r3, r2
+ 8000250:	ddf8      	ble.n	8000244 <main+0x13c>
+
+		// ===== 3. PB15 輸出高電位 (點亮藍燈) =====
+		GPIOB->BSRR = (1 << 15);
+ 8000252:	4b1f      	ldr	r3, [pc, #124]	@ (80002d0 <main+0x1c8>)
+ 8000254:	2280      	movs	r2, #128	@ 0x80
+ 8000256:	0212      	lsls	r2, r2, #8
+ 8000258:	619a      	str	r2, [r3, #24]
+		for(i=0;i<=150000;i++);	//小延時
+ 800025a:	2300      	movs	r3, #0
+ 800025c:	607b      	str	r3, [r7, #4]
+ 800025e:	e002      	b.n	8000266 <main+0x15e>
+ 8000260:	687b      	ldr	r3, [r7, #4]
+ 8000262:	3301      	adds	r3, #1
+ 8000264:	607b      	str	r3, [r7, #4]
+ 8000266:	687b      	ldr	r3, [r7, #4]
+ 8000268:	4a1b      	ldr	r2, [pc, #108]	@ (80002d8 <main+0x1d0>)
+ 800026a:	4293      	cmp	r3, r2
+ 800026c:	ddf8      	ble.n	8000260 <main+0x158>
+
+
+		// ===== 1. PB1 輸出低電位 (熄滅紅燈，Bit 16 + 1 = 17 寫 1) =====
+		GPIOB->BSRR = (1 << 17);
+ 800026e:	4b18      	ldr	r3, [pc, #96]	@ (80002d0 <main+0x1c8>)
+ 8000270:	2280      	movs	r2, #128	@ 0x80
+ 8000272:	0292      	lsls	r2, r2, #10
+ 8000274:	619a      	str	r2, [r3, #24]
+		for(i=0;i<=150000;i++);	//小延時
+ 8000276:	2300      	movs	r3, #0
+ 8000278:	607b      	str	r3, [r7, #4]
+ 800027a:	e002      	b.n	8000282 <main+0x17a>
+ 800027c:	687b      	ldr	r3, [r7, #4]
+ 800027e:	3301      	adds	r3, #1
+ 8000280:	607b      	str	r3, [r7, #4]
+ 8000282:	687b      	ldr	r3, [r7, #4]
+ 8000284:	4a14      	ldr	r2, [pc, #80]	@ (80002d8 <main+0x1d0>)
+ 8000286:	4293      	cmp	r3, r2
+ 8000288:	ddf8      	ble.n	800027c <main+0x174>
+
+		//PB2
+		GPIOB->BSRR |= (1<<18);		//PB2輸出低電位
+ 800028a:	4b11      	ldr	r3, [pc, #68]	@ (80002d0 <main+0x1c8>)
+ 800028c:	699a      	ldr	r2, [r3, #24]
+ 800028e:	4b10      	ldr	r3, [pc, #64]	@ (80002d0 <main+0x1c8>)
+ 8000290:	2180      	movs	r1, #128	@ 0x80
+ 8000292:	02c9      	lsls	r1, r1, #11
+ 8000294:	430a      	orrs	r2, r1
+ 8000296:	619a      	str	r2, [r3, #24]
+		for(i=0;i<=150000;i++);	//小延時
+ 8000298:	2300      	movs	r3, #0
+ 800029a:	607b      	str	r3, [r7, #4]
+ 800029c:	e002      	b.n	80002a4 <main+0x19c>
+ 800029e:	687b      	ldr	r3, [r7, #4]
+ 80002a0:	3301      	adds	r3, #1
+ 80002a2:	607b      	str	r3, [r7, #4]
+ 80002a4:	687b      	ldr	r3, [r7, #4]
+ 80002a6:	4a0c      	ldr	r2, [pc, #48]	@ (80002d8 <main+0x1d0>)
+ 80002a8:	4293      	cmp	r3, r2
+ 80002aa:	ddf8      	ble.n	800029e <main+0x196>
+
+		// ===== 3. PB15 輸出低電位 (熄滅藍燈，Bit 16 + 15 = 31 寫 1) =====
+		GPIOB->BSRR = (1 << 31);
+ 80002ac:	4b08      	ldr	r3, [pc, #32]	@ (80002d0 <main+0x1c8>)
+ 80002ae:	2280      	movs	r2, #128	@ 0x80
+ 80002b0:	0612      	lsls	r2, r2, #24
+ 80002b2:	619a      	str	r2, [r3, #24]
+		for(i=0;i<=150000;i++);	//小延時
+ 80002b4:	2300      	movs	r3, #0
+ 80002b6:	607b      	str	r3, [r7, #4]
+ 80002b8:	e002      	b.n	80002c0 <main+0x1b8>
+ 80002ba:	687b      	ldr	r3, [r7, #4]
+ 80002bc:	3301      	adds	r3, #1
+ 80002be:	607b      	str	r3, [r7, #4]
+ 80002c0:	687b      	ldr	r3, [r7, #4]
+ 80002c2:	4a05      	ldr	r2, [pc, #20]	@ (80002d8 <main+0x1d0>)
+ 80002c4:	4293      	cmp	r3, r2
+ 80002c6:	ddf8      	ble.n	80002ba <main+0x1b2>
+		GPIOB->BSRR = (1 << 1);
+ 80002c8:	e7a9      	b.n	800021e <main+0x116>
+ 80002ca:	46c0      	nop			@ (mov r8, r8)
+ 80002cc:	40021000 	.word	0x40021000
+ 80002d0:	48000400 	.word	0x48000400
+ 80002d4:	ffff7fff 	.word	0xffff7fff
+ 80002d8:	000249f0 	.word	0x000249f0
+
+080002dc <Reset_Handler>:
+
+  .section .text.Reset_Handler
+  .weak Reset_Handler
+  .type Reset_Handler, %function
+Reset_Handler:
+  ldr   r0, =_estack
+ 80002dc:	480d      	ldr	r0, [pc, #52]	@ (8000314 <LoopForever+0x2>)
+  mov   sp, r0          /* set stack pointer */
+ 80002de:	4685      	mov	sp, r0
+/* Call the clock system initialization function.*/
+  bl  SystemInit
+ 80002e0:	e000      	b.n	80002e4 <Reset_Handler+0x8>
+ 80002e2:	bf00      	nop
+
+/* Copy the data segment initializers from flash to SRAM */
+  ldr r0, =_sdata
+ 80002e4:	480c      	ldr	r0, [pc, #48]	@ (8000318 <LoopForever+0x6>)
+  ldr r1, =_edata
+ 80002e6:	490d      	ldr	r1, [pc, #52]	@ (800031c <LoopForever+0xa>)
+  ldr r2, =_sidata
+ 80002e8:	4a0d      	ldr	r2, [pc, #52]	@ (8000320 <LoopForever+0xe>)
+  movs r3, #0
+ 80002ea:	2300      	movs	r3, #0
+  b LoopCopyDataInit
+ 80002ec:	e002      	b.n	80002f4 <LoopCopyDataInit>
+
+080002ee <CopyDataInit>:
+
+CopyDataInit:
+  ldr r4, [r2, r3]
+ 80002ee:	58d4      	ldr	r4, [r2, r3]
+  str r4, [r0, r3]
+ 80002f0:	50c4      	str	r4, [r0, r3]
+  adds r3, r3, #4
+ 80002f2:	3304      	adds	r3, #4
+
+080002f4 <LoopCopyDataInit>:
+
+LoopCopyDataInit:
+  adds r4, r0, r3
+ 80002f4:	18c4      	adds	r4, r0, r3
+  cmp r4, r1
+ 80002f6:	428c      	cmp	r4, r1
+  bcc CopyDataInit
+ 80002f8:	d3f9      	bcc.n	80002ee <CopyDataInit>
+
+/* Zero fill the bss segment. */
+  ldr r2, =_sbss
+ 80002fa:	4a0a      	ldr	r2, [pc, #40]	@ (8000324 <LoopForever+0x12>)
+  ldr r4, =_ebss
+ 80002fc:	4c0a      	ldr	r4, [pc, #40]	@ (8000328 <LoopForever+0x16>)
+  movs r3, #0
+ 80002fe:	2300      	movs	r3, #0
+  b LoopFillZerobss
+ 8000300:	e001      	b.n	8000306 <LoopFillZerobss>
+
+08000302 <FillZerobss>:
+
+FillZerobss:
+  str  r3, [r2]
+ 8000302:	6013      	str	r3, [r2, #0]
+  adds r2, r2, #4
+ 8000304:	3204      	adds	r2, #4
+
+08000306 <LoopFillZerobss>:
+
+LoopFillZerobss:
+  cmp r2, r4
+ 8000306:	42a2      	cmp	r2, r4
+  bcc FillZerobss
+ 8000308:	d3fb      	bcc.n	8000302 <FillZerobss>
+
+
+/* Call static constructors */
+  bl __libc_init_array
+ 800030a:	f000 f811 	bl	8000330 <__libc_init_array>
+/* Call the application's entry point.*/
+
+  bl main
+ 800030e:	f7ff fefb 	bl	8000108 <main>
+
+08000312 <LoopForever>:
+
+LoopForever:
+  b LoopForever
+ 8000312:	e7fe      	b.n	8000312 <LoopForever>
+  ldr   r0, =_estack
+ 8000314:	20002000 	.word	0x20002000
+  ldr r0, =_sdata
+ 8000318:	20000000 	.word	0x20000000
+  ldr r1, =_edata
+ 800031c:	20000000 	.word	0x20000000
+  ldr r2, =_sidata
+ 8000320:	08000398 	.word	0x08000398
+  ldr r2, =_sbss
+ 8000324:	20000000 	.word	0x20000000
+  ldr r4, =_ebss
+ 8000328:	2000001c 	.word	0x2000001c
+
+0800032c <ADC_IRQHandler>:
+ * @retval : None
+*/
+  .section .text.Default_Handler,"ax",%progbits
+Default_Handler:
+Infinite_Loop:
+  b Infinite_Loop
+ 800032c:	e7fe      	b.n	800032c <ADC_IRQHandler>
+	...
+
+08000330 <__libc_init_array>:
+ 8000330:	b570      	push	{r4, r5, r6, lr}
+ 8000332:	2600      	movs	r6, #0
+ 8000334:	4c0c      	ldr	r4, [pc, #48]	@ (8000368 <__libc_init_array+0x38>)
+ 8000336:	4d0d      	ldr	r5, [pc, #52]	@ (800036c <__libc_init_array+0x3c>)
+ 8000338:	1b64      	subs	r4, r4, r5
+ 800033a:	10a4      	asrs	r4, r4, #2
+ 800033c:	42a6      	cmp	r6, r4
+ 800033e:	d109      	bne.n	8000354 <__libc_init_array+0x24>
+ 8000340:	2600      	movs	r6, #0
+ 8000342:	f000 f819 	bl	8000378 <_init>
+ 8000346:	4c0a      	ldr	r4, [pc, #40]	@ (8000370 <__libc_init_array+0x40>)
+ 8000348:	4d0a      	ldr	r5, [pc, #40]	@ (8000374 <__libc_init_array+0x44>)
+ 800034a:	1b64      	subs	r4, r4, r5
+ 800034c:	10a4      	asrs	r4, r4, #2
+ 800034e:	42a6      	cmp	r6, r4
+ 8000350:	d105      	bne.n	800035e <__libc_init_array+0x2e>
+ 8000352:	bd70      	pop	{r4, r5, r6, pc}
+ 8000354:	00b3      	lsls	r3, r6, #2
+ 8000356:	58eb      	ldr	r3, [r5, r3]
+ 8000358:	4798      	blx	r3
+ 800035a:	3601      	adds	r6, #1
+ 800035c:	e7ee      	b.n	800033c <__libc_init_array+0xc>
+ 800035e:	00b3      	lsls	r3, r6, #2
+ 8000360:	58eb      	ldr	r3, [r5, r3]
+ 8000362:	4798      	blx	r3
+ 8000364:	3601      	adds	r6, #1
+ 8000366:	e7f2      	b.n	800034e <__libc_init_array+0x1e>
+ 8000368:	08000390 	.word	0x08000390
+ 800036c:	08000390 	.word	0x08000390
+ 8000370:	08000394 	.word	0x08000394
+ 8000374:	08000390 	.word	0x08000390
+
+08000378 <_init>:
+ 8000378:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
+ 800037a:	46c0      	nop			@ (mov r8, r8)
+ 800037c:	bcf8      	pop	{r3, r4, r5, r6, r7}
+ 800037e:	bc08      	pop	{r3}
+ 8000380:	469e      	mov	lr, r3
+ 8000382:	4770      	bx	lr
+
+08000384 <_fini>:
+ 8000384:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
+ 8000386:	46c0      	nop			@ (mov r8, r8)
+ 8000388:	bcf8      	pop	{r3, r4, r5, r6, r7}
+ 800038a:	bc08      	pop	{r3}
+ 800038c:	469e      	mov	lr, r3
+ 800038e:	4770      	bx	lr
